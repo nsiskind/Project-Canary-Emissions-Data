@@ -1,0 +1,15 @@
+# Ignore Visual Studio files
+.vs/
+.idea/
+*.user
+*.suo
+*.sqlite
+*.vscode/
+
+# Ignore build outputs
+bin/
+obj/
+
+# Ignore logs and temporary files
+*.log
+*.tmp
