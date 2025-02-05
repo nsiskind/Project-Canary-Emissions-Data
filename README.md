@@ -1,5 +1,10 @@
 # Project Canary Emissions - Take-Home Assignment
 
+This repository contains code to visualize and compare methane emissions data.
+
+
+# Project Canary Emissions - Take-Home Assignment (Old Readme)
+
 This project involves building a system to process and visualize methane emissions data. The backend is scaffolded in C# using .NET 8. This is a suggested starting point for the project, but you're free to choose your own implementation.
 ## Description
 We have estimated and measured methane emissions data, in kg, that we would like to reconcile. Also provided is a site reference document with site centers and names.
@@ -12,7 +17,7 @@ As a user I would like to be able to compare my estimated and measured data acro
 * Attention to code structure.
 * Treat this project as if you're developing for a large scale system
 * That you demonstrate thought about the product requirements
-  * Feel free to ask follow up questions.
+* Feel free to ask follow up questions.
 
 ## Don't worry about
 * Authentication 

@@ -11,8 +11,8 @@ services:
       - "5433:5432"
     volumes:
       - db_data:/var/lib/postgresql/data
-      - ./data:/data  # Mount the local 'data' folder containing CSVs
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql # Mount initialization scripts
+      - ./data:/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
 
 volumes:
   db_data:

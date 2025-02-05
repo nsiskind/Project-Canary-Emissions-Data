@@ -1,28 +1,28 @@
 package models
 
 type EstimatedEmissions struct {
-	Id                 int    `json:"id"`
+	Id                 string `json:"id"`
 	Latitude           string `json:"latitude"`
 	Longitude          string `json:"longitude"`
-	EquipmentGroupName string `json:"equipment_group_name"`
+	EquipmentGroupName string `json:"equipmentGroupName"`
 	Start              string `json:"start"`
 	End                string `json:"end"`
-	MethaneInKg        string `json:"methane_in_kg"`
+	MethaneInKg        string `json:"methaneInKg"`
 }
 
 type MeasuredEmissions struct {
-	Id                 int    `json:"id"`
+	Id                 string `json:"id"`
 	Latitude           string `json:"latitude"`
 	Longitude          string `json:"longitude"`
-	EquipmentGroupName string `json:"equipment_group_name"`
+	EquipmentGroupName string `json:"equipmentGroupName"`
 	Start              string `json:"start"`
 	End                string `json:"end"`
-	EquipmentId        string `json:"equipment_id"`
-	MethaneInKg        string `json:"methane_in_kg"`
+	EquipmentId        string `json:"equipmentId"`
+	MethaneInKg        string `json:"methaneInKg"`
 }
 
 type SiteReference struct {
-	Id        int    `json:"id"`
+	Id        string `json:"id"`
 	Site      string `json:"site"`
 	Latitude  string `json:"latitude"`
 	Longitude string `json:"longitude"`

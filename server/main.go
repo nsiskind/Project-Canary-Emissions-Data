@@ -7,6 +7,10 @@ import (
 
 	"gocode/api"
 	"gocode/db"
+
+	"github.com/gorilla/mux"
+	_ "github.com/lib/pq"
+	"github.com/rs/cors"
 )
 
 // Database connection string
@@ -27,8 +31,17 @@ func main() {
 	}
 	defer db.Close()
 
-	api.RegisterApiRoutes(db)
+	router := mux.NewRouter()
+	router.HandleFunc("/getEstimatedEmissions", func(w http.ResponseWriter, r *http.Request) { api.GetEstimatedEmissions(db, w) }).Methods("GET")
+	router.HandleFunc("/getMeasuredEmissions", func(w http.ResponseWriter, r *http.Request) { api.GetMeasuredEmissions(db, w) }).Methods("GET")
+	router.HandleFunc("/getSiteReference", func(w http.ResponseWriter, r *http.Request) { api.GetSiteReference(db, w) }).Methods("GET")
 
-	fmt.Printf("Starting server on port %s...\n", Port)
-	log.Fatal(http.ListenAndServe(Port, nil))
+	c := cors.New(cors.Options{
+		AllowedOrigins:   []string{"http://localhost:3000"},
+		AllowCredentials: true,
+	})
+
+	handler := c.Handler(router)
+	fmt.Printf("listening on port %v...\n", Port)
+	log.Fatal(http.ListenAndServe(Port, handler))
 }
