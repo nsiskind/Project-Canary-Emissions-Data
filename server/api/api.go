@@ -3,12 +3,22 @@ package api
 import (
 	"database/sql"
 	"encoding/json"
+	"fmt"
 	"gocode/models"
 	"log"
 	"net/http"
 )
 
+var (
+	CoordsSigFigs = 5
+	Sites         = map[string]string{}
+)
+
 func GetEstimatedEmissions(db *sql.DB, w http.ResponseWriter) {
+	if len(Sites) == 0 {
+		Sites = getSitesByLatLong(db)
+	}
+
 	query := `SELECT * FROM estimated_emissions;`
 
 	// Execute the query
@@ -27,6 +37,7 @@ func GetEstimatedEmissions(db *sql.DB, w http.ResponseWriter) {
 		}
 		response = append(response, models.EstimatedEmissions{
 			Id:                 Id,
+			Site:               Sites[getLatLongKey(Latitude, Longitude)],
 			Latitude:           Latitude,
 			Longitude:          Longitude,
 			EquipmentGroupName: EquipmentGroupName,
@@ -44,6 +55,9 @@ func GetEstimatedEmissions(db *sql.DB, w http.ResponseWriter) {
 }
 
 func GetMeasuredEmissions(db *sql.DB, w http.ResponseWriter) {
+	if len(Sites) == 0 {
+		Sites = getSitesByLatLong(db)
+	}
 
 	query := `SELECT * FROM measured_emissions;`
 
@@ -54,14 +68,15 @@ func GetMeasuredEmissions(db *sql.DB, w http.ResponseWriter) {
 	defer rows.Close()
 
 	response := []models.MeasuredEmissions{}
-	var Id, Latitude, Longitude, EquipmentGroupName, Start, End, EquipmentId, MethaneInKg string
+	var Id, Latitude, Longitude, Start, End, EquipmentGroupName, EquipmentId, MethaneInKg string
 	for rows.Next() {
-		err := rows.Scan(&Id, &Latitude, &Longitude, &EquipmentGroupName, &Start, &End, &EquipmentId, &MethaneInKg)
+		err := rows.Scan(&Id, &Latitude, &Longitude, &Start, &End, &EquipmentGroupName, &EquipmentId, &MethaneInKg)
 		if err != nil {
 			log.Fatal("Error scanning row: ", err)
 		}
 		response = append(response, models.MeasuredEmissions{
 			Id:                 Id,
+			Site:               Sites[getLatLongKey(Latitude, Longitude)],
 			Latitude:           Latitude,
 			Longitude:          Longitude,
 			EquipmentGroupName: EquipmentGroupName,
@@ -78,6 +93,35 @@ func GetMeasuredEmissions(db *sql.DB, w http.ResponseWriter) {
 	}
 
 	json.NewEncoder(w).Encode(response)
+}
+
+func getSitesByLatLong(db *sql.DB) map[string]string {
+	query := `SELECT * FROM site_reference;`
+
+	rows, err := db.Query(query)
+	if err != nil {
+		log.Fatal("Error executing query: ", err)
+	}
+	defer rows.Close()
+
+	response := map[string]string{}
+
+	var Id, Latitude, Longitude, Site string
+	for rows.Next() {
+		err := rows.Scan(&Id, &Site, &Latitude, &Longitude)
+		if err != nil {
+			log.Fatal("Error scanning row: ", err)
+		}
+
+		response[getLatLongKey(Latitude, Longitude)] = Site
+	}
+	fmt.Println(response)
+
+	return response
+}
+
+func getLatLongKey(lat string, long string) string {
+	return lat[:CoordsSigFigs] + "," + long[:CoordsSigFigs]
 }
 
 func GetSiteReference(db *sql.DB, w http.ResponseWriter) {
