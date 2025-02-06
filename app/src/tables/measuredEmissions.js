@@ -5,6 +5,10 @@ const MeasuredEmissionsTable = ({data}) => {
    // Column definitions for react-table
    const columns = useMemo(
      () => [
+      {
+        Header: 'Site',
+        accessor: 'site',
+      },
        {
          Header: 'Latitude',
          accessor: 'latitude',

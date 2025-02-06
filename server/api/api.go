@@ -3,7 +3,6 @@ package api
 import (
 	"database/sql"
 	"encoding/json"
-	"fmt"
 	"gocode/models"
 	"log"
 	"net/http"
@@ -115,7 +114,6 @@ func getSitesByLatLong(db *sql.DB) map[string]string {
 
 		response[getLatLongKey(Latitude, Longitude)] = Site
 	}
-	fmt.Println(response)
 
 	return response
 }

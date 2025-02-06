@@ -9,12 +9,8 @@ const ComparedEmissionsTable = ({measuredData, estimatedData}) => {
    const columns = useMemo(
      () => [
         {
-            Header: 'Latitude',
-            accessor: 'latitude',
-        },
-        {
-            Header: 'Longitude',
-            accessor: 'longitude',
+          Header: 'Site',
+          accessor: 'site',
         },
         {
             Header: 'Start',
@@ -29,27 +25,57 @@ const ComparedEmissionsTable = ({measuredData, estimatedData}) => {
             accessor: 'equipmentGroupName',
         },
         {
-            Header: 'MethaneInKg',
+            Header: 'Actual Methane (Kg)',
             accessor: 'methaneInKg',
+        },
+        {
+          Header: 'Expected Methane (Kg)',
+          accessor: 'expectedMethaneInKg',
+        },
+        {
+          Header: 'Difference',
+          accessor: 'difference',
         },
      ],
      []
    );
 
-   console.log(getComparedRows(measuredData, estimatedData))
+  //  const reducedMeasuredData = measuredData.reduce((acc, current) => {
+  //   // Check if the item with the same id already exists in the accumulator
+  //   const existing = acc.find(item => 
+  //     item['site'] === current['site'] && 
+  //     item['equipmentGroupName'] === current['equipmentGroupName'] &&
+  //     item['start'] === current['start'] &&
+  //     item['end'] === current['end']
+  //     );
+  
+  //   if (existing) {
+  //     // If the item exists, merge the properties. Here, we're summing the 'age'
+  //     existing["methaneInKg"] = Number(current["methaneInKg"]) + Number(existing["methaneInKg"])
+  //   } else {
+  //     // If the item doesn't exist, add it to the accumulator
+  //     acc.push({ ...current });
+  //   }
+  
+  //   return acc;
+  // }, []);
+
+   let comparedRows = getComparedRows(measuredData, estimatedData)
+   console.log(comparedRows)
 
   return (
     <div>
-      <EmissionsTable tableData={estimatedData} columns={columns} />
+      <EmissionsTable tableData={comparedRows} columns={columns} />
     </div>
   )
 };
 
 const getComparedRows = (measuredData, estimatedData) => {
   
+  // add measured ranges together for site
   let measuredMap = {}
   for (let row of measuredData) {
-    let key = row['latitude'] + row['longitude']
+    let key = row['site'] + row['equipmentGroupName']
     if (key in measuredMap) {
       measuredMap[key][row["start"] + "," + row["end"]] = 0
     } else {
@@ -59,9 +85,9 @@ const getComparedRows = (measuredData, estimatedData) => {
 
   }
 
-  
+  // Add estimate ranges to larger measured ranges
   for (let row of estimatedData) {
-    let key = row['latitude'] + row['longitude']
+    let key = row['site'] + row['equipmentGroupName']
 
     let start = new Date(row['start'])
     let end = new Date(row['end'])
@@ -76,31 +102,28 @@ const getComparedRows = (measuredData, estimatedData) => {
         let estEnd = new Date(splitKey[1])
 
         if ((start >= estStart) && (end < estEnd)) {
-          measuredMap[key][estKey] += methane
+          measuredMap[key][estKey] += parseFloat(methane)
         }
       }
     }
   }
 
-  console.log(measuredData)
-  console.log(measuredMap)
-
   for (let i = 0; i < measuredData.length; i++) {
 
-    let key = measuredData[i]['latitude'] + measuredData[i]['longitude']
+    let key = measuredData[i]['site'] + measuredData[i]['equipmentGroupName']
     let timeKey = measuredData[i]['start'] + "," + measuredData[i]['end']
 
     if (key in measuredMap) {
       if (timeKey in measuredMap[key]) {
-        measuredData[i]['expectedMethaneInKg'] =  measuredMap[key][timeKey]
-        measuredData[i]['difference'] = Number(measuredData[i]['latitude']) - measuredMap[key][timeKey]
+        measuredData[i]['expectedMethaneInKg'] =  measuredMap[key][timeKey] == 0 ? 'n/a' : measuredMap[key][timeKey]
+        measuredData[i]['difference'] = measuredMap[key][timeKey] == 0 ? 'n/a' : parseFloat(measuredData[i]['methaneInKg']) - measuredMap[key][timeKey]
       }
+      continue
     }
+    measuredData[i]['expectedMethaneInKg'] = 'n/a'
+    measuredData[i]['difference'] = 'n/a'
   }
-  console.log(measuredData)
-
   return measuredData
-
 }
 
 
