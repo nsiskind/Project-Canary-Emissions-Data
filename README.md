@@ -23,7 +23,6 @@ Insall npm dependancies and start client:
 ```
 cd app
 npm install
-npm build
 npm start
 ```
 

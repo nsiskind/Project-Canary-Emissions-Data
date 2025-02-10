@@ -92,8 +92,8 @@ const getComparedRows = (measuredData, estimatedData) => {
 
     if (key in measuredMap) {
       if (timeKey in measuredMap[key]) {
-        measuredData[i]['expectedMethaneInKg'] =  measuredMap[key][timeKey] == 0 ? 'n/a' : measuredMap[key][timeKey]
-        measuredData[i]['difference'] = measuredMap[key][timeKey] == 0 ? 'n/a' : parseFloat(measuredData[i]['methaneInKg']) - measuredMap[key][timeKey]
+        measuredData[i]['expectedMethaneInKg'] =  measuredMap[key][timeKey] === 0 ? 'n/a' : measuredMap[key][timeKey]
+        measuredData[i]['difference'] = measuredMap[key][timeKey] === 0 ? 'n/a' : parseFloat(measuredData[i]['methaneInKg']) - measuredMap[key][timeKey]
       }
       continue
     }

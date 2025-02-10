@@ -1,5 +1,5 @@
 import { useTable, useSortBy, useFilters} from 'react-table';
-import { useState, useEffect, useMemo } from 'react';
+import { useState } from 'react';
 import "./emissionsTable.css";
 
 export const EmissionsTable = ({tableData, columns}) => {
