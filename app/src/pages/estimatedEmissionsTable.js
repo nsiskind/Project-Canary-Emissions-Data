@@ -1,13 +1,15 @@
-import {FetchEstimatedEmissions} from '../services/service'
 import {EmissionsTable} from '../components/emissionsTable'
-import { useState, useEffect, useMemo } from 'react';
-import {Loading} from '../components/loading'
+import { useMemo } from 'react';
+
 
 const EstimatedEmissionsTable = ({data}) => {
 
-   // Column definitions for react-table
    const columns = useMemo(
      () => [
+        {
+          Header: 'Site',
+          accessor: 'site',
+        },
         {
             Header: 'Latitude',
             accessor: 'latitude',

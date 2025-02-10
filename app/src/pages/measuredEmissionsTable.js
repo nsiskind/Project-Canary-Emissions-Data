@@ -2,7 +2,6 @@ import {EmissionsTable} from '../components/emissionsTable'
 import { useMemo } from 'react';
 
 const MeasuredEmissionsTable = ({data}) => {  
-   // Column definitions for react-table
    const columns = useMemo(
      () => [
       {
@@ -40,7 +39,7 @@ const MeasuredEmissionsTable = ({data}) => {
      ],
      []
    );
-
+   
   return (
     <div>
       <EmissionsTable tableData={data} columns={columns} />

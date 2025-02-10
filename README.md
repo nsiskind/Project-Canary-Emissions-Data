@@ -3,6 +3,33 @@
 This repository contains code to visualize and compare methane emissions data.
 
 
+To get started:
+
+Set up database and populate with initial data:
+```
+docker-compose up -d
+```
+
+Install go dependencies and Start server:
+
+```
+cd server
+go mod download
+go run main.go
+```
+
+Insall npm dependancies and start client:
+
+```
+cd app
+npm install
+npm build
+npm start
+```
+
+Navigate to http://localhost:3000/ to view the emissions data!
+
+
 # Project Canary Emissions - Take-Home Assignment (Old Readme)
 
 This project involves building a system to process and visualize methane emissions data. The backend is scaffolded in C# using .NET 8. This is a suggested starting point for the project, but you're free to choose your own implementation.

@@ -28,7 +28,7 @@ export const EmissionsTable = ({tableData, columns}) => {
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th className='header'>
+              <th>
                 <span
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   style={{

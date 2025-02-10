@@ -1,7 +1,5 @@
-import {FetchEstimatedEmissions} from '../services/service'
 import {EmissionsTable} from '../components/emissionsTable'
-import { useState, useEffect, useMemo } from 'react';
-import {Loading} from '../components/loading'
+import { useMemo } from 'react';
 
 const ComparedEmissionsTable = ({measuredData, estimatedData}) => {
 
@@ -40,28 +38,7 @@ const ComparedEmissionsTable = ({measuredData, estimatedData}) => {
      []
    );
 
-  //  const reducedMeasuredData = measuredData.reduce((acc, current) => {
-  //   // Check if the item with the same id already exists in the accumulator
-  //   const existing = acc.find(item => 
-  //     item['site'] === current['site'] && 
-  //     item['equipmentGroupName'] === current['equipmentGroupName'] &&
-  //     item['start'] === current['start'] &&
-  //     item['end'] === current['end']
-  //     );
-  
-  //   if (existing) {
-  //     // If the item exists, merge the properties. Here, we're summing the 'age'
-  //     existing["methaneInKg"] = Number(current["methaneInKg"]) + Number(existing["methaneInKg"])
-  //   } else {
-  //     // If the item doesn't exist, add it to the accumulator
-  //     acc.push({ ...current });
-  //   }
-  
-  //   return acc;
-  // }, []);
-
    let comparedRows = getComparedRows(measuredData, estimatedData)
-   console.log(comparedRows)
 
   return (
     <div>
