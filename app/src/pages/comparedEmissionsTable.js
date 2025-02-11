@@ -1,5 +1,6 @@
 import {EmissionsTable} from '../components/emissionsTable'
 import { useMemo } from 'react';
+import './pages.css'
 
 const ComparedEmissionsTable = ({measuredData, estimatedData}) => {
 
@@ -38,10 +39,29 @@ const ComparedEmissionsTable = ({measuredData, estimatedData}) => {
      []
    );
 
-   let comparedRows = getComparedRows(measuredData, estimatedData)
+   const reducedData = useMemo(() => {
+    return measuredData.reduce((accumulator, current) => {
+      const existing = accumulator.find(
+        (item) => item.site === current.site && 
+        item.equipmentGroupName === current.equipmentGroupName &&  
+        item.start === current.start  && 
+        item.end === current.end
+      );
+
+      if (existing) {
+        existing.methaneInKg = (parseFloat(current.methaneInKg) + parseFloat(existing.methaneInKg)).toFixed(9);
+      } else {
+        accumulator.push({ ...current });
+      }
+      return accumulator;
+    }, []); 
+  }, [measuredData]);
+
+   let comparedRows = getComparedRows(reducedData, estimatedData)
 
   return (
     <div>
+      <div className='header'>Compare Emissions by Equipment, Site, and Time</div>
       <EmissionsTable tableData={comparedRows} columns={columns} />
     </div>
   )
@@ -78,7 +98,7 @@ const getComparedRows = (measuredData, estimatedData) => {
         let estStart = new Date(splitKey[0])
         let estEnd = new Date(splitKey[1])
 
-        if ((start >= estStart) && (end < estEnd)) {
+        if ((start >= estStart) && (end <= estEnd)) {
           measuredMap[key][estKey] += parseFloat(methane)
         }
       }
@@ -92,8 +112,8 @@ const getComparedRows = (measuredData, estimatedData) => {
 
     if (key in measuredMap) {
       if (timeKey in measuredMap[key]) {
-        measuredData[i]['expectedMethaneInKg'] =  measuredMap[key][timeKey] === 0 ? 'n/a' : measuredMap[key][timeKey]
-        measuredData[i]['difference'] = measuredMap[key][timeKey] === 0 ? 'n/a' : parseFloat(measuredData[i]['methaneInKg']) - measuredMap[key][timeKey]
+        measuredData[i]['expectedMethaneInKg'] =  measuredMap[key][timeKey] === 0 ? 'n/a' : measuredMap[key][timeKey].toFixed(9)
+        measuredData[i]['difference'] = measuredMap[key][timeKey] === 0 ? 'n/a' : (parseFloat(measuredData[i]['methaneInKg']) - measuredMap[key][timeKey]).toFixed(9)
       }
       continue
     }
@@ -103,8 +123,4 @@ const getComparedRows = (measuredData, estimatedData) => {
   return measuredData
 }
 
-
-
- export default ComparedEmissionsTable;
-
-
+export default ComparedEmissionsTable;

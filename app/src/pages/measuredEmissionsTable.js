@@ -1,5 +1,7 @@
 import {EmissionsTable} from '../components/emissionsTable'
 import { useMemo } from 'react';
+import './pages.css'
+
 
 const MeasuredEmissionsTable = ({data}) => {  
    const columns = useMemo(
@@ -39,9 +41,10 @@ const MeasuredEmissionsTable = ({data}) => {
      ],
      []
    );
-   
+
   return (
     <div>
+      <div className='header'>Measured Emissions Table</div>
       <EmissionsTable tableData={data} columns={columns} />
     </div>
   )

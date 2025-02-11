@@ -21,15 +21,15 @@ export const EmissionsTable = ({tableData, columns}) => {
     useFilters,
     useSortBy
   );
-
+  
   return (
     <table {...getTableProps()} style={{ width: '100%', border: '1px solid black' }}>
       <thead>
         {headerGroups.map(headerGroup => (
-          <tr {...headerGroup.getHeaderGroupProps()}>
+          <tr key={headerGroup.id} {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th>
-                <span
+              <th key={column.id}>
+                <span key={column.id}
                   {...column.getHeaderProps(column.getSortByToggleProps())}
                   style={{
                     cursor: 'pointer',
@@ -61,9 +61,9 @@ export const EmissionsTable = ({tableData, columns}) => {
         {rows.map(row => {
           prepareRow(row);
           return (
-            <tr {...row.getRowProps()}>
+            <tr td key={row.id} {...row.getRowProps()}>
               {row.cells.map(cell => {
-                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>;
+                return <td key={cell.row.id + cell.column.id} {...cell.getCellProps()}>{cell.render('Cell')}</td>;
               })}
             </tr>
           );

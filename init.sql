@@ -12,9 +12,9 @@ CREATE TABLE IF NOT EXISTS measured_emissions (
     Id SERIAL PRIMARY KEY,
     Latitude VARCHAR(100),
     Longitude VARCHAR(100),
-    EquipmentGroupName VARCHAR(100),
     "Start" VARCHAR(100),
     "End" VARCHAR(100),
+    EquipmentGroupName VARCHAR(100),
     EquipmentId VARCHAR(100),
     MethaneInKg VARCHAR(100)
 );
@@ -42,7 +42,7 @@ UNIQUE (Latitude, Longitude);
 COPY estimated_emissions(Latitude, Longitude, EquipmentGroupName, "Start", "End", MethaneInKg)
 FROM '/data/estimated_emissions.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', NULL '');
 
-COPY measured_emissions(Latitude, Longitude, EquipmentGroupName, "Start", "End", EquipmentId, MethaneInKg)
+COPY measured_emissions(Latitude, Longitude, "Start", "End", EquipmentGroupName, EquipmentId, MethaneInKg)
 FROM '/data/measured_emissions.csv' WITH (FORMAT csv, HEADER true, DELIMITER ',', NULL '');
 
 COPY site_reference("Site", Latitude, Longitude)

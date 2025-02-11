@@ -204,15 +204,14 @@ func UpsertMeasuredEmissions(db *sql.DB, data *models.MeasuredEmissions) error {
 			return err
 		}
 	}
-
 	query := `
-		INSERT INTO measured_emissions (Latitude, Longitude, EquipmentGroupName, EquipmentId, "Start", "End", MethaneInKg)
+		INSERT INTO measured_emissions (Latitude, Longitude, "Start", "End", EquipmentGroupName, EquipmentId, MethaneInKg)
 		VALUES ($1, $2, $3, $4, $5, $6, $7)
 		ON CONFLICT (Latitude, Longitude, EquipmentGroupName, EquipmentId, "Start", "End") 
 		DO UPDATE SET 
 			MethaneInKg = EXCLUDED.MethaneInKg	`
 
-	_, err := db.Exec(query, data.Latitude, data.Longitude, data.EquipmentGroupName, data.EquipmentId, data.Start, data.End, data.MethaneInKg)
+	_, err := db.Exec(query, data.Latitude, data.Longitude, data.Start, data.End, data.EquipmentGroupName, data.EquipmentId, data.MethaneInKg)
 	if err != nil {
 		log.Fatal("could not upsert emission", err.Error())
 		return err

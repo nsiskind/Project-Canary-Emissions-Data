@@ -10,7 +10,7 @@ Set up database and populate with initial data:
 docker-compose up -d
 ```
 
-Install go dependencies and Start server:
+Install go dependencies and start server:
 
 ```
 cd server

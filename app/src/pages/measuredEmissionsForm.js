@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import {UpsertMeasuredEmission} from '../services/service'
-import './form.css'
-
+import './pages.css'
 
 const MeasuredEmissionsForm = ({setDataDidUpdate}) => {
   const [formData, setFormData] = useState({
