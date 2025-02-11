@@ -2,6 +2,21 @@
 
 This repository contains code to visualize and compare methane emissions data.
 
+The following features are availible:
+
+**Viewing**
+- view all estimated emissions data
+- view all measured emissions data
+- compare measured emissions with estimated emissions for that time frame
+    - measured emissions are aggregated by site, equipment group, start, and end
+- sort and filter on any field, allowing for easy access to data
+
+**Adding**
+- add measured emissions data
+- add estimated emissions data
+- measured and estimated data CAN be overwritten to account for rare cases where original data or estimates were incorrect
+- adding data will also add a new site IFF that site has not been seen before
+- if current coordinates are associated with a new site, the site will be overriden for all existing data, to account for any potential site renames
 
 To get started:
 

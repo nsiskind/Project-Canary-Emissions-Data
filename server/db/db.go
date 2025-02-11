@@ -170,13 +170,15 @@ func GetSiteReference(db *sql.DB) []models.SiteReference {
 }
 
 func UpsertEstimatedEmissions(sqlDb *sql.DB, data *models.EstimatedEmissions) error {
+
+	// if site doesn't exist or site name has changed, update
 	siteKey := getLatLongKey(data.Latitude, data.Longitude)
-	if _, ok := Sites[siteKey]; !ok {
-		Sites[siteKey] = data.Site
+	if site, ok := Sites[siteKey]; !ok || site != data.Site {
 		err := UpsertSiteReference(sqlDb, &models.SiteReference{Site: data.Site, Latitude: data.Latitude, Longitude: data.Longitude})
 		if err != nil {
 			return err
 		}
+		Sites[siteKey] = data.Site
 	}
 
 	query := `
@@ -196,13 +198,16 @@ func UpsertEstimatedEmissions(sqlDb *sql.DB, data *models.EstimatedEmissions) er
 }
 
 func UpsertMeasuredEmissions(db *sql.DB, data *models.MeasuredEmissions) error {
+
 	siteKey := getLatLongKey(data.Latitude, data.Longitude)
-	if _, ok := Sites[siteKey]; !ok {
-		Sites[siteKey] = data.Site
+
+	// if site doesn't exist or site name has changed, update
+	if site, ok := Sites[siteKey]; !ok || site != data.Site {
 		err := UpsertSiteReference(db, &models.SiteReference{Site: data.Site, Latitude: data.Latitude, Longitude: data.Longitude})
 		if err != nil {
 			return err
 		}
+		Sites[siteKey] = data.Site
 	}
 	query := `
 		INSERT INTO measured_emissions (Latitude, Longitude, "Start", "End", EquipmentGroupName, EquipmentId, MethaneInKg)
@@ -232,5 +237,6 @@ func UpsertSiteReference(db *sql.DB, data *models.SiteReference) error {
 		log.Fatal("could not upsert site", err.Error())
 		return err
 	}
+
 	return nil
 }
