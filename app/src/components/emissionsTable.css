@@ -1,3 +1,15 @@
 .filterInput {
     margin: 10px 20px;
 }
+
+.options {
+    padding: 8px;
+}
+
+.paginationOptions {
+    padding: 8px;
+}
+
+.pageSize {
+    padding: 8px;
+}
