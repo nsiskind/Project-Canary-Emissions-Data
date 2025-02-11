@@ -15,7 +15,7 @@ The following features are availible:
 - add measured emissions data
 - add estimated emissions data
 - measured and estimated data CAN be overwritten to account for rare cases where original data or estimates were incorrect
-- adding data will also add a new site IFF that site has not been seen before
+- adding data will also add a new site if that site has not been seen before
 - if current coordinates are associated with a new site, the site will be overriden for all existing data, to account for any potential site renames
 
 To get started:
