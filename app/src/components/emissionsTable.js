@@ -1,5 +1,4 @@
-import { useTable, useSortBy, useFilters, usePagination, getPaginationRowModel} from 'react-table';
-import { useState } from 'react';
+import { useTable, useSortBy, useFilters, usePagination} from 'react-table';
 import "./emissionsTable.css";
 
 export const EmissionsTable = ({tableData, columns}) => {
@@ -8,7 +7,6 @@ export const EmissionsTable = ({tableData, columns}) => {
     getTableProps,
     getTableBodyProps,
     headerGroups,
-    rows,
     prepareRow,
     page,
     canNextPage,
